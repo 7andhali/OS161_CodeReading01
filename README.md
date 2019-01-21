@@ -1,5 +1,6 @@
 # OS161_CodeReading01
 OS/161 Code Reading, Traps, Interrupts, System Calls, and Debugging Practice
+
 **Questions**:
 
 1. Traps and interrupts are mechanisms used to transfer control between user processes and the operating system. Tell us where we can find the first line of OS/161 code that is executed when a trap occurs. Then tell us where control gets transferred to from that point (i.e., what function services the trap). Be sure to describe the control flow for each type of trap that may occur (e.g., system calls, VM faults, and hardware interrupts).
