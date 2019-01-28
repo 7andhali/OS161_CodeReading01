@@ -7,12 +7,13 @@ OS/161 Code Reading, Traps, Interrupts, System Calls, and Debugging Practice
 
 > Answer: 
 
->The given data above have kern, archs, locore, mips and exception-mips.S has a code handling codes. There is an exception to >that, for example, the code has UTLB exception and therefore, the first code will be 69. in case of a general exception, the >first line will be 87. Both lines of the code, 69 and 87 have one thing is common as that are simple j common_exception. 
->A typeframe is usually created by common_exception which is passed to mips_trap found in kern/arch/,mips/locore/trap.c. which >from is then: 
->syscalls will be sent directly to syscall function in kern/arch/mips/syscall.c.
->VM faults will go directly or will be directed to vm_fault, which by now is kern/arch/mips/vm/dumbvm.c.
->Interrupts are usually directed to mainbus_interrupt which is kern/arch/sys161/dev/lamebus_machdep.c. There are interprocessor >interrupts that are taken to interprocessor_interrupt that is in the kern/thread/clock.c. Usually, the interrupts are mainly >handled outside arch directory. 
->Panic occurs when there is an invalid TLB entries or any other error. 
+The given data above have kern, archs, locore, mips and exception-mips.S has a code handling codes. There is an exception to that, for example, the code has UTLB exception and therefore, the first code will be 69. in case of a general exception, the first line will be 87. Both lines of the code, 69 and 87 have one thing is common as that are simple j common_exception. 
+A typeframe is usually created by common_exception which is passed to mips_trap found in kern/arch/,mips/locore/trap.c. which from is then: 
+syscalls will be sent directly to syscall function in kern/arch/mips/syscall.c.
+VM faults will go directly or will be directed to vm_fault, which by now is kern/arch/mips/vm/dumbvm.c.
+Interrupts are usually directed to mainbus_interrupt which is kern/arch/sys161/dev/lamebus_machdep.c. There are interprocessor interrupts that are taken to interprocessor_interrupt that is in the kern/thread/clock.c. Usually, the interrupts are mainly handled outside arch directory. 
+Panic occurs when there is an invalid TLB entries or any other error. 
+ 
 
 
 
@@ -20,8 +21,8 @@ OS/161 Code Reading, Traps, Interrupts, System Calls, and Debugging Practice
 
 > Answer: 
 
->A trapefram is composed a code. It is kern/arch/sys161/conf/conf.arch. The code is usually more relatable to that of >mips/conf/conf.arch.
->We count 37 uint32_ts inside of the kern/arch/mips/include/trapeframe.h. Each of it is around 4 bytes, a total of 148 bytes. >This is the size of the trapframe because it is required to store around 37 registers such as general purpose, cause and EPC >registers. 
+A trapefram is composed a code. It is kern/arch/sys161/conf/conf.arch. The code is usually more relatable to that of mips/conf/conf.arch.
+We count 37 uint32_ts inside of the kern/arch/mips/include/trapeframe.h. Each of it is around 4 bytes, a total of 148 bytes. This is the size of the trapframe because it is required to store around 37 registers such as general purpose, cause and EPC registers. 
 
 
 
@@ -41,8 +42,9 @@ Interrupt: public InterruptedException()
 
 > Answer: 
 
->Context is usually the set information that allows you to continue with the execution ofdf a task exactly where you left or >stopped at.  The trapframe struct contains uint edi that is the register for the string operations.  it has esi, which is the >string operations source index and ebx that base index. Hence the trapframe struct contains context and registers. 
-> 
+Context is usually the set information that allows you to continue with the execution ofdf a task exactly where you left or 
+stopped at.  The trapframe struct contains uint edi that is the register for the string operations.  it has esi, which is the 
+string operations source index and ebx that base index. Hence the trapframe struct contains context and registers. 
 
 
 
@@ -62,15 +64,14 @@ Interrupt: public InterruptedException()
 
 > Answer: 
 >
-> of the system calls is usually accompanied with a unique identifier number, in OS/161 these system call are usually numbers >that are defined within in kern/include/kern/syscall.h:
->#define sys_reboot
->The library associated with the reboot() usually places the syscall reg. number in register (v0) and in turn issues trap to >the OS. Assembly language exceptions sends to syscall handler the data structure called trapframe which contains, among some >other information and the system number. 
->The system call number is usually used in a switch case statement to select the function 
->void syscall(struct trapframe *tf)
+Each of the system calls is usually accompanied with a unique identifier number, in OS/161 these system call are usually numbers that are defined within in kern/include/kern/syscall.h:
+#define sys_reboot
+The library associated with the reboot() usually places the syscall reg. number in register (v0) and in turn issues trap to the OS. Assembly language exceptions sends to syscall handler the data structure called trapframe which contains, among some other information and the system number. 
+The system call number is usually used in a switch case statement to select the function 
+void syscall(struct trapframe *tf)
 ...
->switch (callno) {
->case sys_reboot:
->err = sys_reboot(tf->tf_a0);
->break;
+switch (callno) {
+case sys_reboot:
+err = sys_reboot(tf->tf_a0);
+break;
 
-> 
